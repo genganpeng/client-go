@@ -75,6 +75,7 @@ func (c *threadSafeMap) Add(key string, obj interface{}) {
 	defer c.lock.Unlock()
 	oldObject := c.items[key]
 	c.items[key] = obj
+	// 更新索引
 	c.updateIndices(oldObject, obj, key)
 }
 
@@ -259,6 +260,7 @@ func (c *threadSafeMap) AddIndexers(newIndexers Indexers) error {
 func (c *threadSafeMap) updateIndices(oldObj interface{}, newObj interface{}, key string) {
 	var oldIndexValues, indexValues []string
 	var err error
+	// 遍历所有索引，name是索引名称，比如是namespace。indexFunc是索引函数
 	for name, indexFunc := range c.indexers {
 		if oldObj != nil {
 			oldIndexValues, err = indexFunc(oldObj)

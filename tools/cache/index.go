@@ -28,10 +28,10 @@ import (
 // Delete).
 //
 // There are three kinds of strings here:
-// 1. a storage key, as defined in the Store interface,
-// 2. a name of an index, and
-// 3. an "indexed value", which is produced by an IndexFunc and
-//    can be a field value or any other string computed from the object.
+//  1. a storage key, as defined in the Store interface,
+//  2. a name of an index, and
+//  3. an "indexed value", which is produced by an IndexFunc and
+//     can be a field value or any other string computed from the object.
 type Indexer interface {
 	Store
 	// Index returns the stored objects whose set of indexed values
@@ -90,6 +90,10 @@ func MetaNamespaceIndexFunc(obj interface{}) ([]string, error) {
 	}
 	return []string{meta.GetNamespace()}, nil
 }
+
+// NamespaceIndex string = "namespace", NamespaceIndex是索引方式名称，比如根据namespace索引
+// eg. Indexers {NamespaceIndex: MetaNamespaceIndexFunc} Indices {NamespaceIndex: Index{}} Index {"default": ["pod name1", "pod name2", ...]}
+// 相当于二级索引
 
 // Index maps the indexed value to a set of keys in the store that match on that value
 type Index map[string]sets.String
